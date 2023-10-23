@@ -1,0 +1,27 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+#outerSign{
+    margin-top: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.divContainer{
+    margin: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.name{
+    margin: 2%;
+}
+.username{
+    margin: 2%;
+}
+.password{
+    margin: 2%;
+}
