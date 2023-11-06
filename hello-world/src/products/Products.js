@@ -1,9 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
+
 import axios from 'axios';
 import './products.css'
- import ListItem from '../ListItem/ListItem';
+import ListItem from '../ListItem/ListItem';
+import Header from '../header/Header';
 
-function GetProducts() {
+
+
+function GetProducts({isLoggedIn}) {
     let i = 0;
     let [products, setProducts] = useState([
         {
@@ -19,13 +23,20 @@ function GetProducts() {
                 count: 120
             }
         }]);
-        let[flag, setFlag] = useState(false);
 
         
-        useEffect(function getProducts() {
-            try{
+
+useEffect(() =>{
+
+            getProds()}, [isLoggedIn]);
+
+
+
+      
            async function getProds() {
-         let response = await axios.get("http://192.168.1.5:4000/products/getProducts");
+            try {
+               //loginWithToken();
+         let response = await axios.get("http://localhost:4000/products/getProducts", {withCredentials: true});
          const responseItems = response.data.data;
          let transformedData =  responseItems.map((item) => {
             return({...item, key : item.id});
@@ -36,98 +47,105 @@ function GetProducts() {
          setProducts(products = [...transformedData]);
          console.log('logging Products');
          console.log(products);
-         setFlag(true);
     }
-    getProds();
-}catch(error) {
-        console.log(error);
+    catch(err) {
+        console.log(err);
     }
-        },[]);
+    }
 
+      
 
-
-
-        
-        const element = (<div id = "big_div">
-        <div className = "fourt">
-        <div className='listDiv'>
-         <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-         <ListItem data = {products[i++]}></ListItem>
-        </div>
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        </div>
-        <div className = "fourt">
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        </div>
-        <div className = "fourt">
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        </div>
-        <div className = "fourt">
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        </div>
-        <div className = "fourt">
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-         </div>
-         <div className='listDiv'>
-        <ListItem data = {products[i++]}></ListItem>
-        </div>
-        </div>
-  </div>);
-  if(flag) {
     if(products?.length > 1) {
-        return element;
-    }
+        return (
+            <>
+            <Header></Header>
+            <div id = "big_div">
+<div className = "fourt">
+<div className='listDiv'>
+ <ListItem data = {products[i++]}></ListItem>
+ </div>
+ <div className='listDiv'>
+ <ListItem data = {products[i++]}></ListItem>
+</div>
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ </div>
+ <div className = "fourt">
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+</div>
+<div className = "fourt">
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ </div>
+ <div className = "fourt">
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+</div>
+<div className = "fourt">
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ </div>
+ <div className = "fourt">
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+</div>
+<div className = "fourt">
+<div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+ </div>
+ <div className='listDiv'>
+<ListItem data = {products[i++]}></ListItem>
+</div>
+</div>
+</div>
+ </>)
   }
   else {
-    return "";
+    return(
+    <>
+    <Header  shouldLogin = {getProds}></Header>;
+    <div className='login_signup'>
+        <h2>Please Signup/Login to procede! </h2>
+    </div>
+    </>
+    )
   }
 }
 export default GetProducts;
-   

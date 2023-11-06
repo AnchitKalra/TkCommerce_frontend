@@ -1,72 +1,78 @@
-import {React, useState} from "react";
-import Products from "../products/Products";
+import React, { useState} from "react";
+import { Button, Input, Alert, Snackbar } from "@mui/material";
+import './login.css';
+import axios from 'axios';
 
-const Login = (props) =>{
-    console.log(props);
 
 
+
+const  Login = ()=> {
+
+   // const instance = axios.create({ baseURL: 'http://localhost:4000/',withCredentials:true });
+    let [isOpen, setOpen] = useState(false);
     const [data, setSubmitHandler] = useState({
         username:"",
         password:""
     });
 
     const inputHandler = (e) =>{
-        data.e.target.name = e.target.value
+        let id = e.target.id;
+        data[id] = e.target.value;
     }
+    async function loginData() {
+        try{
+           
+          let{username, password} = data;
+         let payload = {username, password};
+         console.log('logging payload');
+         console.log(payload);
+    let response = await axios.post("http://localhost:4000/user/login", payload, {withCredentials: true});
+        let responseData = response.data;
+       console.log(responseData)
+        if(responseData.success) {
+            setOpen(true);
+        }
+
+    }
+    catch(err) {
+        console.log(err);
+    }
+        }
     const submitHandler = (e) =>{
         e.preventDefault();
         console.log(data);
-        setSubmitHandler({
-            "username":data.username,
-            "password":data.password
-        });
         console.log('after');
-        const funct = async() =>{
-                await fetch('http://127.0.0.1:4000/user/login',  {
-                method: "POST",
-                headers: {
-                    Accept: "*/*",
-                    "Content-Type": "application/json",
-                },
-
-                body:JSON.stringify({
-                    "username": data.username, "password":data.password
-                })
-            })
-
-        }
-        funct().then((result) => result.json()).then((data) => {
-            if(data.success) {
-                return (
-                    <div>
-                        <Products></Products>
-                    </div>
-                )
-            }
-            else{
-                throw new Error('Account does not exist' );
-            }
-        }).catch(e => console.log(e));
-      }
+        console.log(data);
+        setSubmitHandler(data);
+        loginData();
+    }
+        
+      
+      
 
     return(
-    <div>
+    <>
+        <Snackbar open={isOpen}
+        autoHideDuration={2000}
+        onClose={()=> setOpen(false)}><Alert severity ="success">You have Logged in successfully!</Alert></Snackbar>
+        <div className="formDiv">
     <form>
 
         <div className='divContainer'>
-            <label htmlFor="username">UserName:</label>
-            <input type = "text" className = "username" id = "username" required = {true} onChange={inputHandler}/>
+            <label>UserName</label><br></br>
+            <Input type = "text" id = "username" required = {true} onChange={inputHandler}/>
         </div>
 
         <div className='divContainer'>
-            <label htmlFor="password">Password:</label>
-            <input type = "password" className = "password" id = "password" required = {true} onChange={inputHandler}/>
+            <label>Password</label>
+            <Input type = "password" id = "password" required = {true} onChange={inputHandler}/>
         </div>
         <div className='divContainer'>
-            <button type="submit" onClick={submitHandler}>SUBMIT</button>
+            <Button type="submit" onClick={submitHandler}>SUBMIT</Button>
         </div>
     </form>
-</div>)
+    </div>
+</>)
 }
 
 export default Login;

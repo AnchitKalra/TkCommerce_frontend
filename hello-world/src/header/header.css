@@ -1,0 +1,44 @@
+#divFlex{
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+}
+#signup{
+    margin-left :60%;
+    color: red;
+}
+#login{
+    margin-left: 2%;
+    color: red;
+}
+.tk{
+    color: greenyellow;
+    margin-top: 1%;
+}
+#logout{
+    margin-left: 70%;
+}
+#divButton{
+    margin-left: 70%;
+    margin-top: 3%;
+}
+#spanButton{
+    margin-left: 1%;
+    background-color: red;
+    color: black;
+    margin-top: 0%;
+}
+#cartButton{
+    margin-top: 3%;
+    height: 40px;
+    width: 40px;
+    color: chartreuse;
+    background-color: aqua;
+}
+#supText{
+    font-size: larger;
+    color: chartreuse;
+    margin-top: 2%;
+}

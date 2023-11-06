@@ -1,7 +1,8 @@
 import {React, useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import './signup.css';
 import axios from 'axios';
-import {Input, Snackbar, Button} from '@mui/material';
+import {Input, Snackbar, Button, Alert} from '@mui/material';
 const Signup = () =>{
 
     let [data, setSubmitHandler] = useState({
@@ -14,9 +15,12 @@ const Signup = () =>{
 
     const [open, setOpen] = useState(false);
 
+    const navigate = useNavigate();
+
 
     function handleCLose() {
         setOpen(false);
+
     }
     const submitHandler = (e) =>{
         e.preventDefault();
@@ -25,6 +29,9 @@ const Signup = () =>{
         "password":data.password
         })
       console.log(data);
+      setTimeout(() =>{
+      navigate('/');
+      }, 2000)
 }
 
 useEffect(()=>{
@@ -32,7 +39,7 @@ useEffect(()=>{
         try {
     const options = {
         method: 'POST',
-        url: 'http://192.168.1.5:4000/user/signup',
+        url: 'http://localhost:4000/user/signup',
         headers: {
             'content-type': 'application/json',
         },
@@ -62,11 +69,10 @@ return(
     <div id = "outerSign">
          <Snackbar
         open={open}
-        severity = "success"
-        autoHideDuration={6000}
-        message= "Your account has been created successfully"
-        onClick={handleCLose}
-      />
+        autoHideDuration={2000}
+        onClose={handleCLose}
+      ><Alert severity = "success">Your account has been created successfully</Alert></Snackbar>
+      <div className='formDiv'>
     <form>   
         <div className='divContainer'>
         <label>Name</label>
@@ -86,6 +92,7 @@ return(
         <Button type="submit" onClick={submitHandler}>SUBMIT</Button>
         </div>
         </form>
+        </div>
         </div>)
   
 }
