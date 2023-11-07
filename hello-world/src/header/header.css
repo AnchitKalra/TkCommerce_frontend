@@ -42,3 +42,19 @@
     color: chartreuse;
     margin-top: 2%;
 }
+#logout{
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin-left: 85%;
+    background-color: blue;
+}
+#logoutBtn{
+    color: red;
+}
+#pastOrders{
+    color: red;
+}
+#home{
+    color: red;
+}

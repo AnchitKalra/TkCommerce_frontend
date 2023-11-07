@@ -13,6 +13,8 @@ function ShowCartItems() {
     let [isCheckout, setCheckout] = useState(false);
 
    // let [quantity, setQuantity] = useState([{id, qty}]);
+   let uniqueKeyMinus = 100;
+   let uniqueKeyPlus = 0;
 
     console.log('LOGGING LOCATION');
     console.log(location.state);
@@ -105,11 +107,11 @@ function ShowCartItems() {
             return quantity;
         }}catch(err) {
             console.log(err);
+            window.location.reload();
         }
     }
 
-    let uniqueKeyMinus = 100;
-    let uniqueKeyPlus = 0;
+  
 
     async function checkout(){
         try{
@@ -165,13 +167,14 @@ function ShowCartItems() {
       </CardContent>
   <CardActions>
         <Button id = {uniqueKeyPlus} size="small" name = "minus" key = {uniqueKeyMinus++}onClick = {(event) => buttonHandler( event)}>-</Button>
-        <Button id = {uniqueKeyPlus} className = "btn" size="large" onClick={(event)=> handleCart(event, item, item.quantity || 0)}><AddTocart id = {uniqueKeyPlus}height= "40px" width= "50px"></AddTocart></Button>
+        <Button id = {uniqueKeyPlus} className = "btn" size="large" ><AddTocart id = {uniqueKeyPlus}height= "40px" width= "50px"onClick={(event)=> handleCart(event, item, item.quantity || 0)}></AddTocart></Button>
         <Button id = {uniqueKeyPlus} name = "plus" key = {uniqueKeyPlus++}onClick ={(event)=> buttonHandler(event)}>+{item.quantity|| 0}</Button>
       </CardActions>
                     </Card>
             </div> 
 
              )
+            
 
        })}
        <div id = "total">

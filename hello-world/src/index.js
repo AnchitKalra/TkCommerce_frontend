@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client'
 import './index.css';
 import App from './App';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import axios from 'axios';
 import ShowCartItems from './header/ShowCartItem';
+import ShowOrders from './showOrders/ShowOrders';
 //import reportWebVitals from './reportWebVitals';
 
 
@@ -14,7 +14,8 @@ root.render(
     <BrowserRouter>
   <Routes> 
                 <Route exact path='/' element={< App />}></Route> 
-                <Route exact path='/cart' element={< ShowCartItems/>}></Route> 
+                <Route exact path='/cart' element={< ShowCartItems/>}></Route>
+                <Route exact path = '/orders' element = {<ShowOrders/>}></Route> 
         </Routes> 
     </BrowserRouter>
 );

@@ -9,9 +9,6 @@ import axios from 'axios';
 const ListItem =  (props) =>{
     let [isError, setError] = useState(false);
     let location = useLocation();
-    console.log('logging location from list item');
-    console.log(location);
-
     let [isZeroCount, setZeroCount] = useState(false);
     let [isDanger, setDanger] = useState(false);
     

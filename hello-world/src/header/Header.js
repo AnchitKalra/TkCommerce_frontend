@@ -7,6 +7,7 @@ import {  useState } from 'react';
 import {ReactComponent as AddTocart} from '../ListItem/Addtocart.svg';
 import {useNavigate} from 'react-router-dom';
 
+
 //import ShowCartItems from './ShowCartItem';
 
 function Header(props) {
@@ -17,11 +18,13 @@ function Header(props) {
     let [count, setCount] = useState(0);
     let [isOpen, setOpen] = useState(false);
     const navigate = useNavigate();
+
     
 
 
     
   async function loginWithToken() {
+
     try{
         
     let response = await axios.get('http://localhost:4000/user/login', {withCredentials:true});
@@ -37,6 +40,19 @@ function Header(props) {
 }
 loginWithToken();
 
+    async function logout(){
+        
+    try{
+        
+        let response = await axios.delete('http://localhost:4000/user/logout', {withCredentials:true});
+        console.log(response);
+        setIsLogin(false)
+
+    }
+    catch(err){
+        console.log(err);
+    }
+    }
 
 
 
@@ -49,6 +65,7 @@ loginWithToken();
             setSignup(false)
             setLogin(false);
     }
+
 
     
 async function showCart() {
@@ -86,6 +103,26 @@ async function showCart() {
             console.log(err);
         }
 
+    }
+
+    async function pastOrders() {
+        try{
+            console.log('logging past orders')
+        let response = await axios.get('http://localhost:4000/order/prevOrders', {withCredentials: true});
+        console.log(response);
+        if(response.data.success) {
+            let data = response.data.data;
+            navigate('/orders', {state: data});
+        }
+        }
+        catch(err) {
+            console.log(err);
+        }
+
+    }
+
+    function home() {
+        navigate('/');
     }
 
 
@@ -126,15 +163,21 @@ async function showCart() {
             <div id = "tk">
                 <Typography color={'greenyellow'} marginTop={"38px"} marginLeft={"30px"}>TKCART</Typography>
                 </div>
+              
                 <div id = "divButton"><AddTocart id = "cartButton" onClick = {showCartItems}> </AddTocart>
                 </div>
               
                 <div id = "supText"><sup id = "spanButton">{count}</sup></div>
             </div>
+            <div id = "logout"><Button id = "logoutBtn"onClick={logout}>LOGOUT</Button>
+            <Button id = "pastOrders"onClick={pastOrders}>PAST ORDERS</Button>
+            <Button id = "home" onClick = {home}>Go Back To Home Page</Button>
+            </div>
+          
             </>
 
         )
-    }
+    } 
 }
 
 export default Header;
