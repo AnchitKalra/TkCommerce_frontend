@@ -38,6 +38,7 @@ const ListItem =  (props) =>{
         try {
         if(data) {
             data.quantity = count;
+            data.listItemFlag = true;
             console.log(data);
             if(count > 0) {
             let response = await axios.patch("http://localhost:4000/cart/updateCart", data, {withCredentials: true});

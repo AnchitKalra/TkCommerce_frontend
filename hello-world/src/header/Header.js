@@ -3,7 +3,7 @@ import Signup from '../signup/Signup';
 import Login from '../login/Login';
 import { Button, Modal, Snackbar, Typography, Alert } from '@mui/material';
 import axios from 'axios';
-import {  useState } from 'react';
+import {  useEffect, useState } from 'react';
 import {ReactComponent as AddTocart} from '../ListItem/Addtocart.svg';
 import {useNavigate} from 'react-router-dom';
 
@@ -17,6 +17,7 @@ function Header(props) {
     let [loggedIn, setIsLogin] = useState(false);
     let [count, setCount] = useState(0);
     let [isOpen, setOpen] = useState(false);
+    let [isClear, setClear] = useState(false);
     const navigate = useNavigate();
 
     
@@ -32,6 +33,8 @@ function Header(props) {
         setIsLogin(true);
         if(props?.shouldLogin){
             props.shouldLogin();
+            showCart();
+
         }
     }}
     catch(err){
@@ -54,6 +57,8 @@ loginWithToken();
     }
     }
 
+   
+
 
 
    
@@ -67,7 +72,12 @@ loginWithToken();
     }
 
 
-    
+  
+    useEffect(() => {
+        showCart();
+    }, [])
+
+
 async function showCart() {
     try {
     let data = await axios.get("http://localhost:4000/cart/getCart", {withCredentials : true});
@@ -75,6 +85,7 @@ async function showCart() {
         console.log(data.data.data);
         let {cart, totalValue} =  {...data.data.data};
         if(cart.length === 0) {
+            setCount(0);
             return;
         }
         setCount(cart.length);
@@ -104,7 +115,19 @@ async function showCart() {
         }
 
     }
-
+    
+    async function clearCart() {
+        try{
+            let response = await axios.delete("http://localhost:4000/cart/clearCart", {withCredentials : true});
+            if(response.data.success) {
+                setClear(true);
+                showCart();
+            }
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
     async function pastOrders() {
         try{
             console.log('logging past orders')
@@ -133,30 +156,42 @@ async function showCart() {
             <div id = "tk">
                 <Typography color={'greenyellow'} marginTop={"38px"} marginLeft={"30px"}>TKCART</Typography>
                 </div>
+                <>
             <Button id='signup' onClick={() => setSignup(true)}>SIGNUP</Button>
+            </>
+            <>
             <Modal
                 open={isSignup}
                  onClose={handleClose}
                  aria-labelledby="modal-modal-title"
                  aria-describedby="modal-modal-description"
-                ><><Signup ></Signup></></Modal>
+                ><><Signup /></></Modal></>
+                <>
             <Button id='login' onClick={() => setLogin(true)}>LOGIN</Button>
+            </>
+            <>
             <Modal
                 open={isLogin}
                  onClose={handleClose}
                  aria-labelledby="modal-modal-title"
                  aria-describedby="modal-modal-description"
-                ><><Login></Login></></Modal>
+                ><><Login /></></Modal></>
                 
         </div>
 
     )}
     else {
+        
         return(
             <>            <div>
             <Snackbar open={isOpen}
             autoHideDuration={3000}
             onClose={()=> setOpen(false)}><Alert severity ="warning"> Please add something to your cart first!</Alert></Snackbar>
+            </div>
+            <div>
+            <Snackbar open={isClear}
+            autoHideDuration={3000}
+            onClose={()=> setClear(false)}><Alert severity ="success"> Cart cleared!</Alert></Snackbar>
             </div>
          
             <div id = "divFlex">
@@ -171,6 +206,7 @@ async function showCart() {
             </div>
             <div id = "logout"><Button id = "logoutBtn"onClick={logout}>LOGOUT</Button>
             <Button id = "pastOrders"onClick={pastOrders}>PAST ORDERS</Button>
+            <Button id = "clearCart" onClick = {clearCart}>CLEAR CART</Button>
             <Button id = "home" onClick = {home}>Go Back To Home Page</Button>
             </div>
           

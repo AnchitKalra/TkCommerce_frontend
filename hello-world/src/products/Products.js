@@ -7,7 +7,7 @@ import Header from '../header/Header';
 
 
 
-function GetProducts({isLoggedIn}) {
+function GetProducts({isLoggedIn, count}) {
     let i = 0;
     let [products, setProducts] = useState([
         {
@@ -58,7 +58,7 @@ useEffect(() =>{
     if(products?.length > 1) {
         return (
             <>
-            <Header></Header>
+            <Header count = {count}></Header>
             <div id = "big_div">
 <div className = "fourt">
 <div className='listDiv'>
@@ -142,7 +142,7 @@ useEffect(() =>{
     <>
     <Header  shouldLogin = {getProds}></Header>;
     <div className='login_signup'>
-        <h2>Please Signup/Login to procede! </h2>
+        <h2>Please Signup/Login to proceed! </h2>
     </div>
     </>
     )

@@ -2,11 +2,7 @@
     margin: 0;
     padding: 0;
 }
-#outerSign{
-    margin-top: 15%;
-}
 .formDiv{
-    background-color: bisque;
     height: 400px;
     width:400px
 }

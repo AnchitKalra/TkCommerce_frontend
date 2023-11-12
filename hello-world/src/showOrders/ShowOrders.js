@@ -10,10 +10,12 @@ const ShowOrders = function() {
     console.log(data);
     let cart = [];
     let totalValue = [];
+    let orderId = [];
     try{
     for(let c of data) {
-        cart = [...cart,null, ...c.cart];
+        cart = [...cart,"hello", ...c.cart];
         totalValue = [...totalValue, c.totalValue];
+        orderId = [...orderId, c._id];
     }
 
   
@@ -40,11 +42,14 @@ const ShowOrders = function() {
         {
          
         cart.map(item=>{
-            if(item === null) {
 
-                  return  (<><Typography><h3>Serial NO -- {++j}</h3></Typography><div id = "flexDiv"><Typography><h3>Total Value: ${totalValue[i++]}</h3></Typography></div></>)  
-            }
-            else {
+            
+                if(item === null){
+                    return"";
+                }
+         else   if(item === "hello") {
+                  return  (<><Typography><h3> #{j + 1}</h3><h3>Order_Id: {orderId[j++]}</h3></Typography><div id = "flexDiv"><Typography><h3>Total Value: ${totalValue[i++]}</h3></Typography></div></>)  
+            }else{
             return(
                
                 <>

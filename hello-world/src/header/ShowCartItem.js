@@ -26,14 +26,43 @@ function ShowCartItems() {
 
 
 
-
-    let handleCart = (e, item, previousPrice) => {
-        previousPrice *= item.price;
+    let handleCart = (e, item) => {
+        try{
+            let buttonName = e.target.name;
+            console.log('logging name');
+            console.log(e.target.name);
+        let previousPrice = parseInt(item.price) * item.quantity;
         item.prevPrice = previousPrice; 
         let id = e.target.id;
         console.log('logging from handleCart')
         console.log(id);
-        let quantity = buttonHandler(e, id);
+        let btn = document.getElementsByName('plus')[id];
+        console.log('logging btn');
+        //console.log(btn);
+        var quantity = 0;
+        let text = btn.innerText;
+            console.log('logging btn text');
+            console.log(text);
+
+            for(let i = 0; i < text.length; i++) {
+                if(text.charAt(i) >= '0' && text.charAt(i) <= 9) {
+                    quantity += parseInt(text.charAt(i));
+                }
+            }
+
+            if(buttonName === 'minus') {
+                if(quantity > 0) {
+                    quantity--;
+                    btn.innerText = '+' + quantity;
+                }
+                else{
+                    return;
+                }
+            }
+            if(buttonName === 'plus') {
+                quantity++;
+                btn.innerText = '+' + quantity;
+            }
         item.quantity = quantity;
         console.log('logging quantity');
         console.log(quantity);
@@ -44,13 +73,20 @@ function ShowCartItems() {
 
         async function updateCart(data) {
             try{
+                data.listItemFlag = false;
             let response = await axios.patch('http://localhost:4000/cart/updateCart',data,  {withCredentials:true});
             console.log(response);
             if(response) {
                 setOpen(true);
+                
                 if(response.status === 200) {
-                    let {data} = response; 
+                    let {data} = response;
+                    if(data?.response) { 
                     navigate('/cart', {state: data.response});
+                    }
+                    else {
+                        navigate('/');
+                    }
                 }
                 // location.state = data;
                 // console.log(location.state);
@@ -60,56 +96,16 @@ function ShowCartItems() {
                 console.log(err);
             }
         }
-        updateCart(data);
-
-
-    }
-
-
-    const buttonHandler = (e, id) => {
-        try {
-            if(id === undefined) {
-                console.log('not undefined ?')
-                id =e.target.id
-            }
-        console.log('logging id');
-        console.log(id);
-        let name = e.target.name;
-        let btn = document.getElementsByName('plus')[id];
-        console.log('logging btn');
-        var quantity = 0;
-        let text = btn.innerText;
-            console.log('logging btn text');
-            console.log(text);
-
-            for(let i = 0; i < text.length; i++) {
-                if(text.charAt(i) >= '0' && text.charAt(i) <= 9) {
-                    quantity += Number(text.charAt(i));
-                }
-            }
-          console.log('logging quantty');
-          console.log(quantity);
-          if(quantity === null || quantity === undefined) {
-            quantity = 0;
-          }
-       
-        if(name === 'plus') {
-           quantity++;
-            btn.innerText = `+${quantity}`;
-        }
-        else if(name === 'minus'){
-            if(quantity === 0)
-                return;
-            quantity--;
-            btn.innerText = `+${quantity}`;
-        }
-        else {
-            return quantity;
-        }}catch(err) {
+        updateCart(data);}
+        catch(err) {
             console.log(err);
-            window.location.reload();
         }
+
+
     }
+
+
+   
 
   
 
@@ -166,9 +162,9 @@ function ShowCartItems() {
         <Typography>Price = ${item.price}</Typography>
       </CardContent>
   <CardActions>
-        <Button id = {uniqueKeyPlus} size="small" name = "minus" key = {uniqueKeyMinus++}onClick = {(event) => buttonHandler( event)}>-</Button>
+        <Button id = {uniqueKeyPlus} size="small" name = "minus" value = "minus"key = {uniqueKeyMinus++}onClick = {(event) => handleCart( event, item)}>-</Button>
         <Button id = {uniqueKeyPlus} className = "btn" size="large" ><AddTocart id = {uniqueKeyPlus}height= "40px" width= "50px"onClick={(event)=> handleCart(event, item, item.quantity || 0)}></AddTocart></Button>
-        <Button id = {uniqueKeyPlus} name = "plus" key = {uniqueKeyPlus++}onClick ={(event)=> buttonHandler(event)}>+{item.quantity|| 0}</Button>
+        <Button id = {uniqueKeyPlus} name = "plus" value = "plus" key = {uniqueKeyPlus++}onClick ={(event)=> handleCart(event, item)}>+{item.quantity|| 0}</Button>
       </CardActions>
                     </Card>
             </div> 

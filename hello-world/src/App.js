@@ -1,7 +1,7 @@
 import './app.css';
 import axios from 'axios';
 import GetProducts from './products/Products';
-import { useState } from 'react';
+import {useState} from 'react';
 const App = () =>  {
 
   let [isLoggedIn, setIsLogin] = useState(false);
@@ -18,7 +18,10 @@ const App = () =>  {
         console.log(err);
     }
 }
+
+
 loginWithToken();
+
 
 
   return (
